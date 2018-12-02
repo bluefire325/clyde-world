@@ -62,3 +62,11 @@ Cnt-Sw(config-if)#shutdown
 Cnt-Sw(config-if)#exit
 Cnt-Sw(config)#interface range F0/21 - 24
 Cnt-Sw(config-if-range)#shutdown
+
+
+
+
+
+
+
+johnn clyde dagpin
