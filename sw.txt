@@ -1,0 +1,64 @@
+nt-Sw>enable
+Cnt-Sw#configure terminal
+Enter configuration commands, one per line. End with CNTL/Z.
+Cnt-Sw(config)#ip domain-name cisco.com
+Cnt-Sw(config)#username CAdmin password itsasecret
+Cnt-Sw(config)#crypto key generate rsa
+The name for the keys will be: Cnt-Sw.cisco.com
+Choose the size of the key modulus in the range of 360 to 2048 for your
+ General Purpose Keys. Choosing a key modulus greater than 512 may take
+ a few minutes.
+
+How many bits in the modulus [512]: 1024
+% Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
+
+Cnt-Sw(config)#ip ssh version 2
+*Mar 1 0:3:30.955: %SSH-5-ENABLED: SSH 1.99 has been enabled 
+Cnt-Sw(config)#ip ssh authentication-retries 2
+Cnt-Sw(config)#ip ssh time-out 60
+Cnt-Sw(config)#service password-encryption
+Cnt-Sw(config)#line vty 0 15
+Cnt-Sw(config-line)#trabsp
+Cnt-Sw(config-line)#transp
+Cnt-Sw(config-line)#transport input ssh
+Cnt-Sw(config-line)#login local
+Cnt-Sw(config-line)#exit
+Cnt-Sw(config)#vlan 15
+Cnt-Sw(config-vlan)#name Servers
+Cnt-Sw(config-vlan)#exit
+Cnt-Sw(config)#vlan 30
+Cnt-Sw(config-vlan)#name PCs
+Cnt-Sw(config-vlan)#exit
+Cnt-Sw(config)#vlan 45
+Cnt-Sw(config-vlan)#name Native
+Cnt-Sw(config-vlan)#exit
+Cnt-Sw(config)#vlan 60
+Cnt-Sw(config-vlan)#name Management
+Cnt-Sw(config-vlan)#exit
+Cnt-Sw(config)#interface range F0/11 - 20
+Cnt-Sw(config-if-range)#switchport mode access
+Cnt-Sw(config-if-range)#switchport access vlan 15
+Cnt-Sw(config-if-range)#exit
+Cnt-Sw(config)#interface range F0/1 - 10
+Cnt-Sw(config-if-range)#switchport mode access 
+Cnt-Sw(config-if-range)#switchport access vlan 30
+Cnt-Sw(config-if-range)#exit
+Cnt-Sw(config)#interface G0/1
+Cnt-Sw(config-if)#switchport mode trunk
+Cnt-Sw(config-if)#switchport trunk native vlan 45
+Cnt-Sw(config-if)#exit
+Cnt-Sw(config)#interface vlan 60
+Cnt-Sw(config-if)#ip address 10.10.10.146 255.255.255.240
+Cnt-Sw(config-if)#exit
+Cnt-Sw(config)#ip default-gateway 10.10.10.145
+Cnt-Sw(config)#interface F0/1
+Cnt-Sw(config-if)#switchport port-security
+Cnt-Sw(config-if)#switchport port-security maximum 2
+Cnt-Sw(config-if)#switchport port-security mac-address sticky
+Cnt-Sw(config-if)#switchport port-security violation restrict 
+Cnt-Sw(config-if)#exit
+Cnt-Sw(config)#interface G0/2
+Cnt-Sw(config-if)#shutdown
+Cnt-Sw(config-if)#exit
+Cnt-Sw(config)#interface range F0/21 - 24
+Cnt-Sw(config-if-range)#shutdown
